@@ -51,12 +51,6 @@ function parseINIString(data) {
 var data = fs.readFileSync('config.ini', 'utf8');
 var javascript_ini = parseINIString(data);
 
-var loadSettings = fs.readFileSync('settings.ini', 'utf8');
-var settings = parseINIString(loadSettings);
-
-gPrice = javascript_ini['BSC'].GAS_P;
-gLimit = javascript_ini['BSC'].GAS_L;
-
 // Set default settings from settings.ini
 
 
@@ -98,8 +92,7 @@ console.log(getDate());
 console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
 
 getRewards();
-estimateGas(); 
-autowithdraw();
+estimateGas();
 
 
 
@@ -112,8 +105,7 @@ setInterval(function () {
     console.clear();
     console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
     autoReinvest();
-}, timer);   
-
+}, timer);
 
 // Get Date
 function getDate() {
