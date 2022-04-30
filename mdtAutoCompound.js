@@ -9,7 +9,7 @@ const web3 = new Web3('https://speedy-nodes-nyc.moralis.io/61284c9ef13062eb88064
 var compAmt = 0.05;
 var timer = 30000;
 var today = new Date();
-var gPrice, gLimit;
+var gLimit;
 var withdraw = 'n';
 var withdrawDay = 7;
 var loop = 1;
