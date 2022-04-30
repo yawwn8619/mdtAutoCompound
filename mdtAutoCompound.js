@@ -51,6 +51,7 @@ function parseINIString(data) {
 var data = fs.readFileSync('config.ini', 'utf8');
 var javascript_ini = parseINIString(data);
 
+
 // Set default settings from settings.ini
 
 
