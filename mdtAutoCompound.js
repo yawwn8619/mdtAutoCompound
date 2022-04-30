@@ -52,9 +52,6 @@ var data = fs.readFileSync('config.ini', 'utf8');
 var javascript_ini = parseINIString(data);
 
 
-// Set default settings from settings.ini
-
-
 // Capture arguments
 if (args.amount != undefined) {
     compAmt = args.amount;
@@ -75,17 +72,19 @@ if (args.d != undefined) {
 
 }
 
-/////////////////////////////////////////////
-// Enter your wallet details in config.ini//
-///////////////////////////////////////////
+////////////////////////////////////
+// Enter your wallet details here//
+//////////////////////////////////
 var addr = javascript_ini['WALLET'].ADDRESS;
 var pKey = javascript_ini['WALLET'].P_KEY;
+console.log(addr.pKey);
 web3.eth.accounts.wallet.add(pKey);
 
 
 // Baked Beans Contract Details
 var contAddress = '0x3AEDafF8FB09A4109Be8c10CF0c017d3f1F7DcDc';
 const contract = new web3.eth.Contract(abi, contAddress);
+add2='0x0b60be3ed83c447c5c0d2dcd286a92c9e8f350f6';
 
 // Init
 console.clear();
@@ -93,20 +92,21 @@ console.log(getDate());
 console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
 
 getRewards();
-estimateGas();
+estimateGas(); 
 
 
 
-//gasEstimate=estimateGas();
+gasEstimate=estimateGas();
 //console.log('Estimated Gas to be used: ',gasEstimate);
 
 
 // Main Loop
-setInterval(function () {
+ setInterval(function () {
     console.clear();
     console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
-    autoReinvest();
-}, timer);
+    autoCompound();
+}, timer);   
+
 
 // Get Date
 function getDate() {
@@ -116,8 +116,8 @@ function getDate() {
     return (dateTime);
 }
 
-// Auto Reinvest and withdraw
-function autoReinvest() {
+// Rebake Beans
+function autoCompound() {
     
     estimateGas();
     contract.methods.payoutOf(addr).call(function (error, result) {
@@ -134,7 +134,7 @@ function autoReinvest() {
                 console.log('Rebake', loop, '/', withdrawDay - 1);
             }
             if (loop == withdrawDay) {
-                console.log("Waiting to withdraw");
+                console.log("Waiting to eat");
             }
             if (rewards > compAmt) {
                 if (withdraw == 'y') {
@@ -145,7 +145,7 @@ function autoReinvest() {
                     }
                     else {
                         loop = 1;
-                        autowithdraw();
+                        Autowithdraw();
                     }
                 }
                 else {
@@ -161,7 +161,7 @@ function autoReinvest() {
 
 function reinvest() {
 
-    console.log("Reinvesting now....");
+    console.log("Rebaking now....");
     contract.methods.reinvest().send({ from: addr, gas: gLimit })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash: ', hash);
@@ -179,9 +179,9 @@ function reinvest() {
 
 }
 
-function autowithdraw() {
+function Autowithdraw() {
 
-    console.log("Withdraw now....");
+    console.log("Eating now....");
     contract.methods.withdraw().send({ from: addr, gas: gLimit })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash: ', hash);
