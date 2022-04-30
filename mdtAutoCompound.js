@@ -85,7 +85,6 @@ if (args.d != undefined) {
 //////////////////////////////////
 var addr = javascript_ini['WALLET'].ADDRESS;
 var pKey = javascript_ini['WALLET'].P_KEY;
-console.log(addr.pKey);
 web3.eth.accounts.wallet.add(pKey);
 
 
