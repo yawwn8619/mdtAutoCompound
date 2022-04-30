@@ -99,7 +99,7 @@ console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
 
 getRewards();
 estimateGas(); 
-Autowithdraw();
+autowithdraw();
 
 
 
@@ -108,11 +108,11 @@ Autowithdraw();
 
 
 // Main Loop
-/* setInterval(function () {
+setInterval(function () {
     console.clear();
     console.log('Reinvest Amount: ', compAmt, 'Frequency: ', timer / 1000);
-    autoCompound();
-}, timer);   */
+    autoReinvest();
+}, timer);   
 
 
 // Get Date
@@ -123,8 +123,8 @@ function getDate() {
     return (dateTime);
 }
 
-// Rebake Beans
-function autoCompound() {
+// Auto Reinvest and withdraw
+function autoReinvest() {
     
     estimateGas();
     contract.methods.payoutOf(addr).call(function (error, result) {
@@ -141,7 +141,7 @@ function autoCompound() {
                 console.log('Rebake', loop, '/', withdrawDay - 1);
             }
             if (loop == withdrawDay) {
-                console.log("Waiting to eat");
+                console.log("Waiting to withdraw");
             }
             if (rewards > compAmt) {
                 if (withdraw == 'y') {
@@ -152,7 +152,7 @@ function autoCompound() {
                     }
                     else {
                         loop = 1;
-                        Autowithdraw();
+                        autowithdraw();
                     }
                 }
                 else {
@@ -168,7 +168,7 @@ function autoCompound() {
 
 function reinvest() {
 
-    console.log("Rebaking now....");
+    console.log("Reinvesting now....");
     contract.methods.reinvest().send({ from: addr, gas: gLimit })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash: ', hash);
@@ -186,9 +186,9 @@ function reinvest() {
 
 }
 
-function Autowithdraw() {
+function autowithdraw() {
 
-    console.log("Eating now....");
+    console.log("Withdraw now....");
     contract.methods.withdraw().send({ from: addr, gas: gLimit })
         .on('transactionHash', function (hash) {
             console.log('Transaction Hash: ', hash);
